@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const Table = () => {
   const navigate=useNavigate();
-  const [data, setData] = useState(JSON.parse(localStorage.getItem("statsData"))||null);
+  const [data, setData] = useState(JSON.parse(localStorage.getItem("statsData"))||{});
   const [count, setCount] = useState();
   const [stats, setStats] = useState({});
   const [filter, setFilter] = useState({

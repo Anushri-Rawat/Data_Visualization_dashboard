@@ -6,7 +6,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
 const HomePage = () => {
-  const [data, setData] = useState(JSON.parse(localStorage.getItem("statsData"))||null);
+  const [data, setData] = useState(JSON.parse(localStorage.getItem("statsData"))||{});
     const navigate=useNavigate();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const HomePage = () => {
       }
     }
    
-    if(!data){fetchStats();}
+    if(Object.keys(data).length==0){fetchStats();}
   }, [navigate,data]);
 
   return (
