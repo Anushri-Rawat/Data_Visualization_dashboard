@@ -2,9 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import {AiOutlineClose,AiOutlineArrowDown,AiOutlineArrowUp} from "react-icons/ai";
 import Select from "../Form/Select";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Table = () => {
-  const [data, setData] = useState([]);
+  const navigate=useNavigate();
+  const [data, setData] = useState(JSON.parse(localStorage.getItem("statsData"))||null);
   const [count, setCount] = useState();
   const [stats, setStats] = useState({});
   const [filter, setFilter] = useState({
@@ -19,16 +22,20 @@ const Table = () => {
     pagination: 0,
   });
   const entryRef = useRef(filter.quantity);
+
   useEffect(() => {
-    const url = `http://localhost:8000/api/v1/data/search?end_year=${filter.end_year}&topic=${filter.topic}&sector=${filter.sector}&region=${filter.region}&pestle=${filter.pestle}&source=${filter.source}&country=${filter.country}&quantity=${filter.quantity}&pagination=${filter.pagination}`;
-    fetch(url)
-      .then((res) => res.json())
-      .then((json) => {
-        setCount(json.count);
-        setStats(json.stats);
-        setData(json.data);
-      })
-      .catch((err) => console.log(err));
+    const url = `https://data-visualization-dashboard-6d4h.onrender.com/api/v1/data/search?end_year=${filter.end_year}&topic=${filter.topic}&sector=${filter.sector}&region=${filter.region}&pestle=${filter.pestle}&source=${filter.source}&country=${filter.country}&quantity=${filter.quantity}&pagination=${filter.pagination}`;
+    const fetchData=async()=>{
+      try{
+        const res= await axios(url);
+        setCount(res.data.count);
+          setStats(res.data.stats);
+          setData(res.data.data);
+      }catch(error){
+        navigate('/pages/error/500')
+      }
+    }
+    fetchData();
   }, [filter]);
 
   const addFilter = ([name, value]) => {

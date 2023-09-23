@@ -12,7 +12,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchStats=async()=>{
       try{
-        const res= await axios(`http://localhost:8000/api/v1/data/stats`);
+        const res= await axios(`https://data-visualization-dashboard-6d4h.onrender.com/api/v1/data/stats`);
         localStorage.setItem("statsData",JSON.stringify(res.data.data));
         setData(res.data.data);
       }catch(err){
